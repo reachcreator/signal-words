@@ -10,6 +10,8 @@ This app creates a **52-week calendar of unique words** that your family uses as
 
 ## 🚀 Quick Start
 
+**Try it now:** Visit https://signalwords.confusethemachine.com/ to generate your family's signal words!
+
 1. **Generate your family code** by clicking the "Generate New Family Code" button
 2. **Share the code** securely with your family members
 3. **Each family member** enters the code and generates their calendar
