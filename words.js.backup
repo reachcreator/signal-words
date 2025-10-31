@@ -1,0 +1,159 @@
+// Word list and generation logic for Signal Word App
+// Uses Google 10,000 English Words (Medium filter) - 5,459 common words
+// Source: https://github.com/first20hours/google-10000-english
+
+const WORD_LIST = [
+    "about", "search", "other", "which", "their", "there", "contact", "business",
+    "online", "first", "would", "services", "these", "click", "service", "price",
+    "people", "state", "email", "health", "world", "products", "music", "should",
+    "product", "system", "policy", "number", "please", "support", "message", "after",
+    "software", "video", "where", "rights", "public", "books", "school", "through",
+    "links", "review", "years", "order", "privacy", "items", "company", "group",
+    "under", "general", "research", "university", "january", "reviews", "program",
+    "games", "great", "hotel", "center", "store", "travel", "comments", "report",
+    "change", "sales", "might", "community", "black", "market", "version", "section",
+    "being", "local", "legal", "industry", "development", "results", "member", "details",
+    "terms", "forum", "national", "design", "posted", "internet", "address", "within",
+    "control", "states", "close", "security", "personal", "american", "among", "return",
+    "thanks", "though", "board", "faculty", "complete", "quality", "while", "shopping",
+    "class", "white", "experience", "important", "million", "table", "conference", "those",
+    "credit", "department", "san", "county", "access", "journal", "often", "times",
+    "society", "june", "photo", "chief", "brown", "phone", "forum", "below", "download",
+    "title", "story", "login", "tools", "second", "county", "level", "rating", "front",
+    "cover", "teach", "room", "female", "event", "press", "learn", "sale", "around",
+    "print", "language", "call", "period", "planning", "database", "provide", "calendar",
+    "office", "visit", "length", "industry", "training", "question", "amount", "animal",
+    "summary", "major", "required", "south", "building", "issue", "global", "complete",
+    "office", "received", "treatment", "begin", "leadership", "performance", "driver",
+    "income", "learning", "account", "hospital", "present", "radio", "region", "trade",
+    "trust", "mother", "package", "nation", "animal", "author", "carry", "advice",
+    "receive", "performance", "eight", "animal", "battle", "approach", "physical",
+    "medicine", "patient", "actual", "teacher", "increase", "coast", "feature",
+    "project", "reason", "positive", "physical", "customer", "process", "parent",
+    "sport", "return", "adult", "activity", "pressure", "organization", "believe",
+    "condition", "financial", "charge", "practice", "theory", "letter", "original",
+    "replace", "river", "perfect", "edition", "basic", "direction", "heart", "drug",
+    "green", "memory", "performance", "notice", "modern", "economic", "budget",
+    "chapter", "agency", "action", "figure", "model", "season", "society", "because",
+    "society", "record", "result", "control", "bring", "natural", "ship", "method",
+    "connection", "director", "reduce", "position", "sound", "creative", "share",
+    "trend", "grand", "average", "election", "camera", "structure", "client", "annual",
+    "heavy", "solid", "artist", "standard", "transport", "factor", "class", "richard",
+    "express", "primary", "effort", "figure", "focused", "guest", "sample", "block",
+    "protection", "steel", "freedom", "function", "parking", "employee", "funding",
+    "science", "partner", "civil", "forest", "individual", "season", "neither", "salad",
+    "victory", "running", "answer", "increase", "behavior", "garden", "favorite",
+    "potter", "window", "global", "literature", "poll", "attractive", "plastic",
+    "production", "beach", "impact", "series", "heart", "sweet", "earth", "dance",
+    "attack", "legal", "scientific", "christ", "ocean", "depth", "nuclear", "dealer",
+    "solar", "piece", "glass", "agency", "disease", "fruit", "muscle", "traffic",
+    "engine", "beach", "improvement", "internal", "battle", "campaign", "domestic",
+    "stuff", "french", "storage", "coffee", "extension", "drama", "german", "index",
+    "library", "university", "construction", "knowledge", "mission", "bridge", "alien",
+    "battle", "beginning", "component", "conversation", "database", "double", "drink",
+    "exchange", "existence", "extension", "feedback", "fruit", "independence", "inside",
+    "investment", "morning", "mountain", "obligation", "office", "orange", "payment",
+    "philosophy", "player", "priority", "profession", "property", "reading", "release",
+    "request", "response", "science", "screen", "script", "search", "second", "secret",
+    "selection", "series", "solution", "source", "southern", "speaker", "special",
+    "statement", "station", "storage", "strategy", "student", "subject", "success",
+    "support", "surface", "system", "target", "teacher", "technology", "theory",
+    "traffic", "transport", "treatment", "version", "visual", "volume", "western",
+    "window", "winner", "writing", "yellow",
+    // ... (truncated for demo - full list would include all 5459 words)
+];
+
+/**
+ * Simple seeded random number generator
+ * Uses a linear congruential generator with the UUID as seed
+ */
+class SeededRandom {
+    constructor(seed) {
+        this.seed = this.hashUUID(seed);
+    }
+
+    // Convert UUID string to numeric seed
+    hashUUID(uuid) {
+        let hash = 0;
+        for (let i = 0; i < uuid.length; i++) {
+            const char = uuid.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32-bit integer
+        }
+        return Math.abs(hash);
+    }
+
+    // Generate next random number in sequence
+    next() {
+        this.seed = (this.seed * 9301 + 49297) % 233280;
+        return this.seed / 233280;
+    }
+
+    // Get random integer in range [0, max)
+    nextInt(max) {
+        return Math.floor(this.next() * max);
+    }
+}
+
+/**
+ * Generate weekly signal words for a family using UUID seed
+ * @param {string} uuid - The family UUID seed
+ * @param {number} weeks - Number of weeks to generate (default: 52)
+ * @param {Date} startDate - The start date for the calendar (defaults to current week's Monday)
+ * @returns {Array<{week: number, word: string, startDate: Date}>}
+ */
+function generateSignalWords(uuid, weeks = 52, startDate = null) {
+    const random = new SeededRandom(uuid);
+    const words = [];
+
+    // Use provided start date or default to current week's Monday
+    let calendarStart = startDate;
+    if (!calendarStart) {
+        calendarStart = new Date();
+
+        // Find next Monday
+        const dayOfWeek = calendarStart.getDay();
+        const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek) % 7 + 1;
+        calendarStart.setDate(calendarStart.getDate() + daysUntilMonday);
+        calendarStart.setHours(0, 0, 0, 0);
+    } else {
+        // Ensure we start on a Monday for consistency
+        const dayOfWeek = calendarStart.getDay();
+        if (dayOfWeek !== 1) { // 1 = Monday
+            const daysToMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek) % 7 + 1;
+            calendarStart = new Date(calendarStart);
+            calendarStart.setDate(calendarStart.getDate() + daysToMonday);
+        }
+        calendarStart.setHours(0, 0, 0, 0);
+    }
+
+    for (let i = 0; i < weeks; i++) {
+        const wordIndex = random.nextInt(WORD_LIST.length);
+        const weekStart = new Date(calendarStart);
+        weekStart.setDate(calendarStart.getDate() + (i * 7));
+
+        words.push({
+            week: i + 1,
+            word: WORD_LIST[wordIndex],
+            startDate: weekStart
+        });
+    }
+
+    return words;
+}
+
+/**
+ * Validate that a UUID produces consistent results
+ * @param {string} uuid
+ * @returns {boolean}
+ */
+function validateUUID(uuid) {
+    // Basic UUID v4 format validation
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(uuid);
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { generateSignalWords, validateUUID, WORD_LIST };
+}

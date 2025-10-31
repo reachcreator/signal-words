@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Signal Words - Protect Against AI Voice Scams</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-pink-800">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <div class="flex items-center justify-center mb-4">
+                <img src="family-signal-words.png" alt="Family Signal Words Logo" class="h-32 md:h-48 mr-6" />
+                <h1 class="text-4xl md:text-6xl font-bold text-white bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    Family Signal Words
+                </h1>
+            </div>
+            <p class="text-xl md:text-2xl text-cyan-200 mb-8 max-w-3xl mx-auto">
+                🛡️ Stop AI voice scams before they steal your family's money
+            </p>
+        </div>
+
+        <!-- Main App Card -->
+        <div class="max-w-4xl mx-auto mb-12">
+            <div class="backdrop-blur-xl bg-black/20 rounded-3xl border border-gray-700/20 shadow-2xl p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Create Your Family's Secret Code</h2>
+                    <p class="text-lg text-cyan-200 max-w-2xl mx-auto">
+                        Generate a unique family identifier that creates weekly rotating signal words.
+                        Even perfect AI voice clones can't guess what only your family knows.
+                    </p>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <!-- Generate New Code Column -->
+                    <div class="backdrop-blur-lg bg-black/20 rounded-2xl p-6 border border-gray-700/20">
+                        <h3 class="text-xl font-bold text-white mb-4 text-center">🔐 Generate New Family Code</h3>
+                        <p class="text-cyan-200 text-sm mb-6 text-center">
+                            First time? Create your unique family security code
+                        </p>
+                        <button id="generate-uuid" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            Generate Code
+                        </button>
+
+                        <!-- Code Display (initially hidden) -->
+                        <div id="uuid-display" class="uuid-display hidden mt-6 p-4 backdrop-blur-lg bg-black/20 rounded-xl border border-gray-700/30">
+                            <p class="text-white text-sm mb-2">Your Family Code:</p>
+                            <div class="uuid-code bg-black/40 text-cyan-300 p-3 rounded-lg font-mono text-sm break-all border border-cyan-400/50" id="uuid-code"></div>
+                            <button id="copy-uuid" class="mt-3 w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                                📋 Copy Instructions
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Enter Existing Code Column -->
+                    <div class="backdrop-blur-lg bg-black/20 rounded-2xl p-6 border border-gray-700/20">
+                        <h3 class="text-xl font-bold text-white mb-4 text-center">📝 Enter Existing Family Code</h3>
+                        <p class="text-cyan-200 text-sm mb-6 text-center">
+                            Already have a code? Enter it here to generate your calendar
+                        </p>
+                        <div class="space-y-4">
+                            <input type="text" id="existing-uuid-input" placeholder="Paste your family code here" class="w-full px-4 py-3 rounded-xl bg-black/20 border border-gray-700/30 text-white placeholder-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" />
+                            <button id="use-existing-code" class="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                                ✅ Use This Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Generator -->
+        <div class="max-w-4xl mx-auto mb-12">
+            <div id="calendar-section" class="calendar-generator hidden backdrop-blur-xl bg-black/20 rounded-3xl border border-gray-700/20 shadow-2xl p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-6">Create Your Signal Word Calendar</h2>
+                <p class="text-lg text-cyan-200 text-center mb-8 max-w-2xl mx-auto">
+                    Enter your family code to generate 52 weeks of unique signal words that change automatically.
+                </p>
+
+                <div class="uuid-input flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
+                    <input type="text" id="uuid-input" placeholder="Enter your family code" class="flex-1 max-w-md px-4 py-3 rounded-xl bg-black/20 border border-gray-700/30 text-white placeholder-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" />
+                    <button id="generate-calendar" class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        🎯 Generate Calendar
+                    </button>
+                </div>
+
+                <div id="calendar-preview" class="calendar-preview hidden">
+                    <h3 class="text-2xl font-bold text-white text-center mb-6">Your 52-Week Signal Words</h3>
+                    <div class="word-list max-h-96 overflow-y-auto bg-black/30 rounded-2xl p-6 mb-6 border border-gray-700/20" id="word-list"></div>
+                    <div class="text-center">
+                        <button id="download-ics" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            📅 Download Calendar (.ics)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works - Visual Flow -->
+        <div class="max-w-6xl mx-auto mb-12">
+            <div class="backdrop-blur-xl bg-black/20 rounded-3xl border border-gray-700/20 shadow-2xl p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-8">How Signal Words Stop AI Scams</h2>
+
+                <!-- Visual Flow Diagram -->
+                <div class="flex flex-col md:flex-row items-center justify-between mb-12 space-y-6 md:space-y-0 md:space-x-6">
+                    <!-- Step 1 -->
+                    <div class="flex-1 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <span class="text-2xl">🔐</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">1. Generate UUID</h3>
+                        <p class="text-cyan-200">Create your family's unique secret code</p>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="text-cyan-400 text-3xl">→</div>
+
+                    <!-- Step 2 -->
+                    <div class="flex-1 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <span class="text-2xl">📅</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">2. Set Up Calendar</h3>
+                        <p class="text-cyan-200">Import weekly words into your calendar app</p>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="text-cyan-400 text-3xl">→</div>
+
+                    <!-- Step 3 -->
+                    <div class="flex-1 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <span class="text-2xl">📞</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">3. Verify Calls</h3>
+                        <p class="text-cyan-200">Ask for this week's signal word</p>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="text-cyan-400 text-3xl">→</div>
+
+                    <!-- Step 4 -->
+                    <div class="flex-1 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <span class="text-2xl">🛡️</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">4. Stay Protected</h3>
+                        <p class="text-cyan-200">AI can't guess your secret words!</p>
+                    </div>
+                </div>
+
+                <!-- Key Benefits -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="backdrop-blur-lg bg-red-500/20 rounded-2xl p-6 border border-red-400/30">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                            <span class="text-3xl mr-3">🚨</span>
+                            The AI Scam Problem
+                        </h3>
+                        <p class="text-red-100 mb-4">
+                            Scammers can now clone anyone's voice perfectly using AI. They steal hours of audio
+                            from social media, videos, and podcasts to create convincing impersonations.
+                        </p>
+                        <p class="text-red-100">
+                            Traditional passwords, security questions, and voice recognition all fail because
+                            AI can sound exactly like your loved ones asking for emergency money.
+                        </p>
+                    </div>
+
+                    <div class="backdrop-blur-lg bg-green-500/20 rounded-2xl p-6 border border-green-400/30">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                            <span class="text-3xl mr-3">✅</span>
+                            The Signal Word Solution
+                        </h3>
+                        <p class="text-green-100 mb-4">
+                            Signal words rely on <strong>shared secret knowledge</strong> that only exists
+                            in your family's private calendar. AI can't access this because it's not public data.
+                        </p>
+                        <ul class="text-green-100 space-y-2">
+                            <li>• Works against perfect voice clones</li>
+                            <li>• No special apps or hardware needed</li>
+                            <li>• Changes weekly for maximum security</li>
+                            <li>• Easy to use for the whole family</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real News Stories -->
+        <div class="max-w-6xl mx-auto mb-12">
+            <div class="backdrop-blur-xl bg-black/20 rounded-3xl border border-gray-700/20 shadow-2xl p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-8">🚨 Real AI Voice Scam Stories</h2>
+                <p class="text-lg text-cyan-200 text-center mb-8 max-w-3xl mx-auto">
+                    These recent news stories show how devastating AI voice scams can be.
+                    Signal words could have prevented every single one.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="backdrop-blur-lg bg-black/10 rounded-2xl p-6 border border-gray-700/20 hover:bg-black/20 transition-all duration-300">
+                        <h4 class="text-xl font-bold text-white mb-3">Philadelphia Father Nearly Scammed $9,000</h4>
+                        <p class="text-cyan-200 mb-4">
+                            A man received a call from someone claiming to be his son, using a cloned voice
+                            that sounded exactly like him. The scammer demanded money for bail.
+                        </p>
+                        <a href="https://www.app.com/story/news/local/2024/01/17/philadelphia-father-nearly-scammed-9000-son-ai-voice-clone/72198665007/" class="text-cyan-300 hover:text-cyan-100 underline">
+                            Read the story →
+                        </a>
+                    </div>
+
+                    <div class="backdrop-blur-lg bg-black/10 rounded-2xl p-6 border border-gray-700/20 hover:bg-black/20 transition-all duration-300">
+                        <h4 class="text-xl font-bold text-white mb-3">Marco Rubio AI Impersonator Targets World Leaders</h4>
+                        <p class="text-cyan-200 mb-4">
+                            A scammer used AI to clone Senator Marco Rubio's voice and called foreign ministers
+                            demanding they transfer money. The calls were convincing enough to reach high-level officials.
+                        </p>
+<a href="https://www.washingtonpost.com/technology/2024/07/08/ai-marco-rubio-deepfake-call/" class="text-cyan-300 hover:text-cyan-100 underline">
+                            Read the story →
+                        </a>
+                    </div>
+
+                    <div class="backdrop-blur-lg bg-black/10 rounded-2xl p-6 border border-gray-700/20 hover:bg-black/20 transition-all duration-300">
+                        <h4 class="text-xl font-bold text-white mb-3">Italian Elite Targeted by AI Voice Scammers</h4>
+                        <p class="text-cyan-200 mb-4">
+                            Wealthy Italians were scammed out of millions when AI cloned the voices of their
+                            family members, demanding ransom payments for supposed kidnappings.
+                        </p>
+                        <a href="https://www.bloomberg.com/news/articles/2025-02-09/italian-elite-targeted-by-scammers-using-ai-voice-impersonation" class="text-cyan-300 hover:text-cyan-100 underline">
+                            Read the story →
+                        </a>
+                    </div>
+
+                    <div class="backdrop-blur-lg bg-black/10 rounded-2xl p-6 border border-gray-700/20 hover:bg-black/20 transition-all duration-300">
+                        <h4 class="text-xl font-bold text-white mb-3">FBI Warns: AI Scams Surge 148%</h4>
+                        <p class="text-cyan-200 mb-4">
+                            Impersonation scams using AI have increased 148% this year. The FBI reports
+                            victims losing millions to voice cloning attacks targeting government officials.
+                        </p>
+                        <a href="https://www.infosecurity-magazine.com/news/ai-scams-reported-surge-148/" class="text-cyan-300 hover:text-cyan-100 underline">
+                            Read the story →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-8">
+            <div class="backdrop-blur-lg bg-black/20 rounded-2xl p-6 border border-black/20 max-w-4xl mx-auto">
+                <p class="text-cyan-200 mb-4">
+                    🔒 This app runs entirely in your browser. No data is stored or transmitted anywhere.
+                    Your family's security depends entirely on keeping the UUID secret.
+                </p>
+                <p class="text-cyan-300 text-sm flex items-center justify-center">
+                    Made with ❤️ to protect families from AI scams
+                    <span class="mx-2">by</span>
+                    <a href="https://confusethemachine.com" target="_blank" class="inline-block hover:opacity-80 transition-opacity">
+                        <img src="ctmlogo.png" alt="Confuse The Machine" class="h-6 inline-block" />
+                    </a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="calendar.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

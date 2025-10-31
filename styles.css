@@ -1,0 +1,124 @@
+/* Family Signal Words App - Additional Styles for Tailwind */
+
+/* Custom animations and effects */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-glow {
+    animation: glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Glassmorphism enhancements */
+.glass-card {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Word list styling */
+.word-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.word-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.word-item:last-child {
+    margin-bottom: 0;
+}
+
+.word-week {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.word-text {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #fbbf24;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.word-date {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Hidden elements (keeping for JS compatibility) */
+.hidden {
+    display: none !important;
+}
+
+/* Custom scrollbar for word list */
+.word-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.word-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.word-list::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.5);
+    border-radius: 10px;
+}
+
+.word-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .word-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .word-week {
+        align-self: flex-start;
+    }
+}
