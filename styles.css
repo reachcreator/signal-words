@@ -122,3 +122,128 @@
         align-self: flex-start;
     }
 }
+
+/* Print Styles - Clean, readable format for printing */
+@media print {
+    /* Hide everything except the print content */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Show only the print calendar content */
+    #print-calendar-content,
+    #print-calendar-content * {
+        visibility: visible;
+    }
+
+    /* Position the print content */
+    #print-calendar-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        color: black !important;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Print-specific table styling */
+    .print-calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 14pt;
+        line-height: 1.4;
+    }
+
+    .print-calendar-table th,
+    .print-calendar-table td {
+        border: 2px solid #333;
+        padding: 12pt;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .print-calendar-table th {
+        background-color: #f0f0f0 !important;
+        font-weight: bold;
+        font-size: 16pt;
+        color: #000 !important;
+    }
+
+    .print-calendar-table .week-number {
+        font-weight: bold;
+        font-size: 14pt;
+        color: #2563eb !important;
+        width: 80pt;
+    }
+
+    .print-calendar-table .signal-word {
+        font-weight: bold;
+        font-size: 18pt;
+        color: #dc2626 !important;
+        text-transform: uppercase;
+        letter-spacing: 1pt;
+    }
+
+    .print-calendar-table .date-range {
+        font-size: 12pt;
+        color: #666 !important;
+        font-style: italic;
+    }
+
+    /* Print header */
+    .print-header {
+        text-align: center;
+        margin-bottom: 30pt;
+        border-bottom: 3px solid #333;
+        padding-bottom: 20pt;
+    }
+
+    .print-title {
+        font-size: 24pt;
+        font-weight: bold;
+        margin-bottom: 10pt;
+        color: #000 !important;
+    }
+
+    .print-subtitle {
+        font-size: 14pt;
+        color: #666 !important;
+        margin-bottom: 10pt;
+    }
+
+    .print-instructions {
+        font-size: 12pt;
+        color: #333 !important;
+        margin-top: 20pt;
+        text-align: left;
+        max-width: 600pt;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .print-instructions ul {
+        margin: 10pt 0;
+        padding-left: 20pt;
+    }
+
+    .print-instructions li {
+        margin-bottom: 8pt;
+    }
+
+    /* Page breaks for better printing */
+    .print-calendar-table {
+        page-break-inside: avoid;
+    }
+
+    .print-calendar-table tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    /* Hide print button in print view */
+    #print-calendar {
+        display: none !important;
+    }
+}

@@ -15,10 +15,64 @@ document.addEventListener('DOMContentLoaded', function() {
     const calendarPreview = document.getElementById('calendar-preview');
     const wordList = document.getElementById('word-list');
     const downloadIcsBtn = document.getElementById('download-ics');
+    const printCalendarBtn = document.getElementById('print-calendar');
+    const printCalendarContent = document.getElementById('print-calendar-content');
+    const printFamilyCode = document.getElementById('print-family-code');
+    const printCalendarTableBody = document.getElementById('print-calendar-table-body');
 
     let currentUuid = null;
     let currentStartDate = null;
     let currentWords = null;
+
+    // Function to populate print content with calendar data
+    function populatePrintContent() {
+        // Set family code in print header
+        const year = currentStartDate.getFullYear();
+        const month = String(currentStartDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentStartDate.getDate()).padStart(2, '0');
+        const familyCode = `${currentUuid}-${year}${month}${day}`;
+        printFamilyCode.textContent = familyCode;
+
+        // Clear existing table rows
+        printCalendarTableBody.innerHTML = '';
+
+        // Populate table with calendar data
+        currentWords.forEach(word => {
+            const row = document.createElement('tr');
+
+            // Week number
+            const weekCell = document.createElement('td');
+            weekCell.className = 'week-number';
+            weekCell.textContent = `Week ${word.week}`;
+            row.appendChild(weekCell);
+
+            // Signal word
+            const wordCell = document.createElement('td');
+            wordCell.className = 'signal-word';
+            wordCell.textContent = word.word.toUpperCase();
+            row.appendChild(wordCell);
+
+            // Date range
+            const dateCell = document.createElement('td');
+            dateCell.className = 'date-range';
+            const startDate = new Date(word.startDate);
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 6); // Add 6 days for end of week
+
+            const formatDate = (date) => {
+                return date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            };
+
+            dateCell.textContent = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+            row.appendChild(dateCell);
+
+            printCalendarTableBody.appendChild(row);
+        });
+    }
 
     // Generate cryptographically secure UUID v4 with embedded start date
     function generateFamilyCode() {
@@ -324,6 +378,28 @@ Share this code securely with your family members!`;
             console.error('Error downloading calendar:', error);
             alert('Error downloading calendar. Please try again.');
         }
+    });
+
+    // Print calendar functionality
+    printCalendarBtn.addEventListener('click', function() {
+        if (!currentWords || !currentUuid || !currentStartDate) {
+            alert('Please generate your calendar first.');
+            return;
+        }
+
+        // Populate print content
+        populatePrintContent();
+
+        // Show print content (temporarily)
+        printCalendarContent.classList.remove('hidden');
+
+        // Trigger print dialog
+        window.print();
+
+        // Hide print content after printing (with small delay to ensure print dialog opens)
+        setTimeout(() => {
+            printCalendarContent.classList.add('hidden');
+        }, 1000);
     });
 
     // Add some visual enhancements
